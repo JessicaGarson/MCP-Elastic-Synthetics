@@ -63,7 +63,6 @@ In Warp’s MCP servers panel, add a JSON configuration file:
 1. Toggle Agent Mode in Warp.
 2. Ask a question that contains the test name, URL, prompt, and schedule. or call the function directly and you will be prompted for a test name, URL, prompt, and schedule `llm_create_and_deploy_test_from_prompt()`
 
-
-### Troubleshooting 
+## Troubleshooting 
 - Pop-ups and complex flows may require additional manual adjustments.
 
