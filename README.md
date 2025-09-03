@@ -14,7 +14,7 @@ Creates Playwright tests using a template-based approach.
 - Reliable but tests may look similar across runs.  
 
 ### `llm_create_and_deploy_test_from_prompt`
-Generates Playwright tests dynamically based on your **prompt**.  
+Generates Playwright tests dynamically based on your prompt.  
 - Inputs: test name, URL, prompt, schedule  
 - Uses an LLM for more flexible, prompt-driven test generation.  
 
