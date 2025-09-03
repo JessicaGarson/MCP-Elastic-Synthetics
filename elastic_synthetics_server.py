@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+ #!/usr/bin/env python3
 
 import os
 import json
@@ -7,7 +7,6 @@ import re
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 from mcp.server.fastmcp import FastMCP
-from typing import Tuple
 from openai import OpenAI
 
 
@@ -90,10 +89,10 @@ def ensure_playwright_available() -> bool:
             print("✨ Playwright available for enhanced test generation")
             return True
         else:
-            print("ℹ️  Playwright not available - using standard test generation")
+            print("Playwright not available - using standard test generation")
             return False
     except Exception as e:
-        print(f"ℹ️  Playwright check failed ({e}) - using standard test generation")
+        print(f"Playwright check failed ({e}) - using standard test generation")
         return False
 
 def analyze_website_with_enhanced_logic(website_url: str) -> Dict[str, Any]:
@@ -893,90 +892,6 @@ def load_env_from_warp_mcp() -> Dict[str, str]:
     return elastic_env_vars
 
 @mcp.tool()
-def initialize_intelligent_testing() -> Dict[str, Any]:
-    """🎭 Initialize intelligent test generation with automatic Playwright MCP setup"""
-    try:
-        print("🚀 Initializing Elastic Synthetics with Enhanced Intelligence...")
-        
-        # Check if Playwright MCP is installed
-        try:
-            result = subprocess.run(['npx', '@playwright/mcp@latest', '--help'], 
-                                  capture_output=True, timeout=5)
-            playwright_installed = result.returncode == 0
-        except:
-            playwright_installed = False
-        
-        if not playwright_installed:
-            print("📦 Installing Playwright MCP for enhanced intelligence...")
-            try:
-                subprocess.run(['npm', 'install', '-g', '@playwright/mcp@latest'], 
-                             check=True, timeout=60)
-                print("✅ Playwright MCP installed successfully!")
-                playwright_installed = True
-            except Exception as e:
-                print(f"⚠️  Could not install Playwright MCP: {e}")
-        
-        # Test the intelligent system
-        if playwright_installed:
-            # Try to start and test Playwright MCP
-            mcp_available = ensure_playwright_mcp_running()
-            
-            if mcp_available:
-                # Test with a quick analysis
-                test_analysis = analyze_website_with_playwright_mcp("https://github.com")
-                intelligent_mode = test_analysis.get("available", False)
-            else:
-                intelligent_mode = False
-        else:
-            intelligent_mode = False
-        
-        # Check Elastic configuration
-        env_vars = load_env_from_warp_mcp()
-        elastic_configured = bool(
-            env_vars.get('ELASTIC_KIBANA_URL') and 
-            env_vars.get('ELASTIC_API_KEY')
-        )
-        
-        return safe_json_response({
-            "status": "success",
-            "message": "🎭 Elastic Synthetics Enhanced Intelligence Initialized!",
-            "capabilities": {
-                "elastic_synthetics": True,
-                "intelligent_analysis": intelligent_mode,
-                "playwright_mcp": playwright_installed,
-                "environment_configured": elastic_configured
-            },
-            "features": [
-                "✅ Dynamic test generation based on website characteristics",
-                "🎯 Intelligent website analysis" if intelligent_mode else "🔄 Domain-based test generation (fallback)",
-                "⚡ Automatic Playwright MCP management" if intelligent_mode else "💡 Install Playwright MCP for enhanced intelligence",
-                "🚀 Clean test deployment (no monitor.use issues)",
-                "🛡️ Graceful fallbacks ensure reliability",
-                "🔧 Comprehensive URL cleanup and validation"
-            ],
-            "intelligence_level": "🧠 Enhanced" if intelligent_mode else "🎲 Standard",
-            "next_steps": [
-                "Your test generation is now ready!",
-                "Tests will automatically use the best available intelligence",
-                "Enhanced mode provides real-time website analysis" if intelligent_mode else "Consider setting up Playwright MCP for enhanced intelligence",
-                "All existing workflows continue to work seamlessly"
-            ],
-            "magical_features": {
-                "auto_playwright_management": intelligent_mode,
-                "intelligent_fallback": True,
-                "zero_configuration": True,
-                "seamless_enhancement": True
-            }
-        })
-        
-    except Exception as e:
-        return safe_json_response({
-            "status": "error",
-            "message": f"Initialization failed: {str(e)}",
-            "fallback": "Standard test generation still available"
-        })
-
-@mcp.tool()
 def diagnose_warp_mcp_config() -> Dict[str, Any]:
     """Diagnose Warp MCP environment configuration for Elastic Synthetics"""
     try:
@@ -1023,189 +938,6 @@ def diagnose_warp_mcp_config() -> Dict[str, Any]:
             "error_type": type(e).__name__
         })
 
-@mcp.tool()
-def create_test_and_manual_deploy_command(
-    website_url: str,
-    test_name: str,
-    schedule_minutes: int = 10,
-    locations: Optional[List[str]] = None,
-    tags: Optional[List[str]] = None,
-    working_directory: Optional[str] = None
-) -> Dict[str, Any]:
-    """Create a clean browser test and provide manual deployment command"""
-    try:
-        if working_directory is None:
-            working_directory = os.getcwd()
-        
-        if locations is None:
-            locations = ["us_east"]
-        
-        locations = validate_elastic_locations(locations)
-        
-        if tags is None:
-            tags = []
-        
-        # Validate schedule
-        allowed_schedules = [1, 2, 3, 5, 10, 15, 20, 30, 60, 120, 240]
-        if schedule_minutes not in allowed_schedules:
-            schedule_minutes = min(allowed_schedules, key=lambda x: abs(x - schedule_minutes))
-        
-        # Get environment variables
-        elastic_vars = load_env_from_warp_mcp()
-        kibana_url = (
-            elastic_vars.get('ELASTIC_KIBANA_URL') or 
-            elastic_vars.get('KIBANA_URL') or
-            os.environ.get('ELASTIC_KIBANA_URL') or
-            os.environ.get('KIBANA_URL')
-        )
-        api_key = (
-            elastic_vars.get('ELASTIC_API_KEY') or 
-            elastic_vars.get('API_KEY') or
-            os.environ.get('ELASTIC_API_KEY') or
-            os.environ.get('API_KEY')
-        )
-        project_id = (
-            elastic_vars.get('ELASTIC_PROJECT_ID') or 
-            elastic_vars.get('PROJECT_ID') or
-            os.environ.get('ELASTIC_PROJECT_ID') or
-            os.environ.get('PROJECT_ID', 'mcp-synthetics-demo')
-        )
-        space = (
-            elastic_vars.get('ELASTIC_SPACE') or 
-            elastic_vars.get('SPACE') or
-            os.environ.get('ELASTIC_SPACE') or
-            os.environ.get('SPACE', 'default')
-        )
-        
-        # Clean the Kibana URL to prevent double slashes
-        if kibana_url:
-            kibana_url = clean_kibana_url(kibana_url)
-        
-        if not kibana_url or not api_key:
-            return safe_json_response({
-                "status": "error",
-                "message": "Missing ELASTIC_KIBANA_URL or ELASTIC_API_KEY in environment",
-                "suggestion": "Run diagnose_warp_mcp_config() to check your environment variables"
-            })
-        
-        # Create test file
-        test_name_clean = clean_string(test_name)
-        website_url_clean = clean_string(website_url)
-        
-        test_dir = Path(working_directory) / "synthetic_tests"
-        test_dir.mkdir(exist_ok=True)
-        
-        test_file_name = f"{test_name_clean.lower().replace(' ', '_')}.journey.ts"
-        test_file_path = test_dir / test_file_name
-        
-        # Generate dynamic test steps based on website characteristics
-        dynamic_steps = generate_dynamic_test_steps(website_url_clean)
-        
-        test_content = f'''import {{ journey, step, expect, monitor }} from '@elastic/synthetics';
-
-journey({{
-  name: '{test_name}',
-  tags: {json.dumps(tags)},
-}}, ({{ page, params }}) => {{
-  
-  // Monitor settings are configured via CLI parameters
-  // Individual tests should not override global schedule settings
-  
-  step('Navigate to {website_url_clean}', async () => {{
-    await page.goto('{website_url_clean}');
-    await page.waitForLoadState('networkidle');
-  }});
-  
-  step('Verify page title', async () => {{
-    try {{
-      // Wait for title to be present, but don't fail if it's empty
-      await page.waitForFunction(() => document.title !== undefined, {{ timeout: 3000 }});
-      const title = await page.title();
-      console.log(`Page title: "${{title}}"`);
-      
-      // Check if title exists and is not empty
-      if (title && title.trim().length > 0) {{
-        await expect(page).toHaveTitle(/.+/);
-      }} else {{
-        console.log('Page has no title or empty title - skipping title assertion');
-      }}
-    }} catch (error) {{
-      console.log(`Title check failed: ${{error.message}} - continuing with other tests`);
-    }}
-  }});
-  
-  step('Check page load performance', async () => {{
-    const loadTime = await page.evaluate(() => {{
-      return performance.getEntriesByType('navigation')[0].loadEventEnd - 
-             performance.getEntriesByType('navigation')[0].startTime;
-    }});
-    console.log(`Page load time: ${{loadTime}}ms`);
-    expect(loadTime).toBeLessThan(5000); // Should load within 5 seconds
-  }});{dynamic_steps}
-  
-  step('Take screenshot', async () => {{
-    await page.screenshot({{ path: '{test_name_clean}_screenshot.png' }});
-  }});
-  
-  step('Verify page is visible', async () => {{
-    await expect(page.locator('body')).toBeVisible();
-  }});
-}});
-'''
-        
-        with open(test_file_path, 'w', encoding='utf-8') as f:
-            f.write(test_content)
-        
-        # Create manual deployment commands
-        manual_commands = [
-            f"# Navigate to your project directory",
-            f"cd {working_directory}",
-            f"",
-            f"# Deploy the test file",
-            f"npx @elastic/synthetics push {test_file_path} \\",
-            f"  --auth {api_key} \\",
-            f"  --url {kibana_url} \\",
-            f"  --schedule {schedule_minutes} \\",
-            f"  --locations {','.join(locations)} \\",
-            f"  --id {project_id} \\",
-            f"  --space {space} \\",
-            f"  --yes"
-        ]
-        
-        return safe_json_response({
-            "status": "success",
-            "message": "Test created successfully. Use manual commands to deploy.",
-            "test_file": str(test_file_path),
-            "test_name": test_name,
-            "website_url": website_url,
-            "schedule_minutes": schedule_minutes,
-            "locations": locations,
-            "manual_commands": manual_commands,
-            "manual_commands_text": "\n".join(manual_commands),
-            "environment_check": {
-                "kibana_url_set": bool(kibana_url),
-                "api_key_set": bool(api_key),
-                "kibana_url_preview": kibana_url[:50] + "..." if kibana_url and len(kibana_url) > 50 else kibana_url,
-                "api_key_preview": api_key[:10] + "..." if api_key and len(api_key) > 10 else "Not found",
-                "project_id": project_id,
-                "space": space
-            },
-            "instructions": [
-                "1. The commands above have your actual credentials filled in from Warp MCP",
-                "2. Copy and paste the manual command into your terminal",
-                "3. This test file has NO monitor.use() calls to cause @every format issues",
-                "4. The test uses dynamic steps tailored to the specific website type",
-                "5. Tests are automatically customized based on website characteristics (e.g., GitHub repos, e-commerce, blogs)",
-                "6. Dynamic tests include website-specific checks and random generic tests for comprehensive coverage"
-            ]
-        })
-        
-    except Exception as e:
-        return safe_json_response({
-            "status": "error",
-            "error": str(e),
-            "error_type": type(e).__name__
-        })
 
 @mcp.tool()
 def create_and_deploy_browser_test(
