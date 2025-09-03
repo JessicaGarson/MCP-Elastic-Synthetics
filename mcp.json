@@ -1,0 +1,20 @@
+{
+ "elastic-synthetics": {
+   "command": "python",
+   "args": ["elastic_synthetics_server.py"],
+   "env": {
+     "PYTHONPATH": ".",
+     "ELASTIC_KIBANA_URL": "https://your-kibana-url.elastic-cloud.com",
+     "ELASTIC_API_KEY": "your-api-key-here",
+     "ELASTIC_PROJECT_ID": "mcp-synthetics-demo",
+     "ELASTIC_SPACE": "default",
+     "ELASTIC_AUTO_PUSH": "true",
+     "ELASTIC_USE_JAVASCRIPT": "false",
+     "ELASTIC_INSTALL_DEPENDENCIES": "true",
+     "OPENAI_API_KEY": "sk-your-openai-key",
+     "LLM_MODEL": "gpt-4o"
+   },
+   "working_directory": "/path/to/your/file",
+   "start_on_launch": true
+ }
+}
