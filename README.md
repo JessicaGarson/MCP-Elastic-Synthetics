@@ -3,7 +3,7 @@ Elastic Synthetics enables you to track user pathways using a global testing inf
 
 This experimental project demonstrates how to create user journeys using TypeScript and Elastic Synthetics automatically. You can use Warp as an MCP Client, Gemini 2.5 Pro. This application is written with FastMCP and wraps the Elastic Synthetics CLI agent to deploy browser tests automatically.
 
-## Available MCP Functions
+## Available MCP Tools
 
 ### `diagnose_warp_mcp_config`
 Debugs environment variable issues. Usually only needed for troubleshooting.  
