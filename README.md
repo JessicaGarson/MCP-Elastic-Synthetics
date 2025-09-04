@@ -61,7 +61,7 @@ In Warp’s MCP servers panel, add a JSON configuration file:
 
 ### Step 3: Create Playwright Tests
 1. Toggle Agent Mode in Warp.
-2. Ask a question that contains the test name, URL, prompt, and schedule. or call the function directly and you will be prompted for a test name, URL, prompt, and schedule `llm_create_and_deploy_test_from_prompt()`
+2. Ask a question that contains the test name, URL, prompt, and schedule. Alternatively, you can call the function directly `llm_create_and_deploy_test_from_prompt()`, and you will be prompted for a test name, URL, prompt, and schedule. 
 3. You should be able to see the monitor you created inside of Elastic Observablity. 
 
 ## Troubleshooting 
